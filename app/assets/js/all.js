@@ -56,3 +56,12 @@ function menuToggle() {
 function closeMenu() {
   menu.classList.remove('openMenu');
 }
+
+//開始寫作業
+function gutProductList(){
+  let url = `ttps://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/products`;
+  axios.get(url)
+  .then(function(res){
+    console.log(res)
+  })
+}
