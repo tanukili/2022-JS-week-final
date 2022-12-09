@@ -62,5 +62,17 @@ function menuToggle() {
 
 function closeMenu() {
   menu.classList.remove('openMenu');
+} //開始寫作業
+
+
+function gutProductList() {
+  var url = "ttps://livejs-api.hexschool.io/api/livejs/v1/customer/".concat(api_path, "/products");
+  axios.get(url).then(function (res) {
+    console.log(res);
+  });
 }
+"use strict";
+
+//環境變數：載入設定、金鑰
+var api_path = 'jslive2022';
 //# sourceMappingURL=all.js.map
