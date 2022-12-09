@@ -65,14 +65,75 @@ function closeMenu() {
 } //開始寫作業
 
 
-function gutProductList() {
-  var url = "ttps://livejs-api.hexschool.io/api/livejs/v1/customer/".concat(api_path, "/products");
+var api_path = 'jslive2022'; //重構：初始化部分
+
+function init() {
+  getProductList();
+}
+
+;
+init(); //重構：組字串函式
+
+function addProductHTML(item) {
+  return "\n  <li class=\"productCard\">\n    <h4 class=\"productType\">\u65B0\u54C1</h4>\n    <img src=\"".concat(item.images, "\" alt=\"\">\n    <a href=\"#\" class=\"addCardBtn\" data-id=\"").concat(item.id, "\">\u52A0\u5165\u8CFC\u7269\u8ECA</a>\n    <h3>").concat(item.title, "</h3>\n    <del class=\"originPrice\">NT$").concat(item.origin_price, "</del>\n    <p class=\"nowPrice\">NT$").concat(item.price, "</p>\n  </li>");
+} //產品列表：接 API
+
+
+var productData = [];
+
+function getProductList() {
+  var url = "https://livejs-api.hexschool.io/api/livejs/v1/customer/".concat(api_path, "/products");
   axios.get(url).then(function (res) {
-    console.log(res);
+    productData = res.data.products;
+    renderProductList(productData);
+  })["catch"](function (error) {
+    console.log(error);
   });
 }
-"use strict";
 
-//環境變數：載入設定、金鑰
-var api_path = 'jslive2022';
+;
+var productList = document.querySelector('.productWrap'); //產品列表：渲染
+
+function renderProductList(productData) {
+  var str = '';
+  productData.forEach(function (item) {
+    str += addProductHTML(item);
+    productList.innerHTML = str;
+  });
+}
+
+; //下拉選單
+
+var productSelect = document.querySelector('.productSelect'); //下拉選單：監聽
+
+productSelect.addEventListener('change', function (e) {
+  var category = e.target.value; //下拉選單：判斷篩選
+
+  if (category == '全部') {
+    renderProductList(productData);
+    return;
+  }
+
+  var str = '';
+  productData.forEach(function (item) {
+    //篩選出相同的category
+    if (item.category == category) {
+      str += addProductHTML(item);
+      productList.innerHTML = str;
+    }
+  });
+}); //加入購物車：監聽按鈕
+
+productList.addEventListener('click', function (e) {
+  //取消預設
+  e.preventDefault();
+  var addCartClass = e.target.getAttribute('class'); //排除按鈕以外
+
+  if (addCartClass !== 'addCardBtn') {
+    return;
+  }
+
+  ;
+  var productId = e.target.getAttribute('data-id');
+});
 //# sourceMappingURL=all.js.map
